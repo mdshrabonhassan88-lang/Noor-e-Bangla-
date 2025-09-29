@@ -3,325 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - Noor-e Bangla</title>
-    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600&display=swap" rel="stylesheet">
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+    <title>Shohoj World</title>
     <style>
-        :root {
-            --primary-color: #26a69a;
-            --danger-color: #d32f2f;
-            --light-bg: #f4f7f9;
-            --white-bg: #ffffff;
-            --text-color: #333;
-            --border-color: #dee2e6;
-        }
+        /* General Body Styles */
         body {
-            font-family: 'Hind Siliguri', sans-serif;
-            background-color: var(--light-bg);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f0f2f5;
             margin: 0;
-            padding: 15px;
-            color: var(--text-color);
-        }
-        .container {
-            max-width: 900px;
-            margin: auto;
-            background: var(--white-bg);
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1, h2, h3 {
-            color: var(--primary-color);
-            text-align: center;
-            margin-top: 0;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        input, textarea, select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 16px;
-            box-sizing: border-box;
-            font-family: 'Hind Siliguri', sans-serif;
-        }
-        textarea {
-            min-height: 100px;
-            resize: vertical;
-        }
-        .btn {
-            padding: 10px 15px;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-            width: 100%;
-            box-sizing: border-box;
-        }
-        .btn-primary {
-            background-color: var(--primary-color);
-            color: white;
-        }
-        .btn-danger {
-            background-color: var(--danger-color);
-            color: white;
-        }
-        .nav-tabs {
+            padding: 0;
             display: flex;
-            flex-wrap: wrap;
-            border-bottom: 2px solid var(--border-color);
-            margin-bottom: 20px;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
         }
-        .nav-tab {
-            padding: 10px 15px;
-            cursor: pointer;
-            border: none;
-            background: none;
-            font-size: 16px;
-            font-weight: 500;
-            flex-grow: 1;
-            text-align: center;
-        }
-        .nav-tab.active {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            margin-bottom: -2px;
-        }
-        .tab-content {
-            display: none;
-        }
-        .tab-content.active {
-            display: block;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-            font-size: 14px;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid var(--border-color);
-            text-align: left;
-            word-break: break-word;
-        }
-        th {
-            background-color: #f8f9fa;
-        }
-        .dashboard-stats {
+
+        /* Mobile Container */
+        .mobile-container {
+            width: 375px;
+            height: 812px;
+            background-color: #f9f9f9;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            text-align: center;
-            margin: 20px 0;
+            overflow: hidden;
+            position: relative;
         }
-        .stat-card {
-            background: #e8f5e9;
-            padding: 20px;
-            border-radius: 8px;
+
+        /* Main Content Area */
+        .app-content {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
         }
-        .stat-card h3 {
-            margin: 0;
-            color: #388e3c;
-            font-size: 16px;
-        }
-        .stat-card p {
-            font-size: 22px;
-            font-weight: bold;
-            margin: 10px 0 0;
-        }
+
+        /* Page/Screen Styles */
+        .page { display: none; }
+        .page.active { display: block; }
+        .page-title { text-align: center; font-size: 22px; font-weight: 600; margin-bottom: 20px; }
         
-        @media (min-width: 600px) {
-            .btn { width: auto; }
-            .dashboard-stats {
-                flex-direction: row;
-                justify-content: space-around;
-            }
-            .stat-card { width: 200px; }
-            .nav-tab { flex-grow: 0; }
+        /* Common Card Style */
+        .card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.07);
         }
+
+        /* Home Page Styles (Updated) */
+        #home .balance-card {
+            background: linear-gradient(135deg, #8855e9, #6a30d8);
+            color: white;
+            padding: 30px 20px;
+            border-radius: 16px;
+            text-align: center;
+            margin: 10px 0 25px 0;
+        }
+        #home .balance-card p { margin: 0; font-size: 16px; opacity: 0.9; }
+        #home .balance-card h1 { margin: 8px 0; font-size: 38px; }
+        #home .balance-card small { font-size: 14px; opacity: 0.9; }
+        #home .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        #home .action-item {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+        }
+        #home .action-item span { font-size: 16px; font-weight: 600; color: #333; }
+        #home .action-item small { font-size: 13px; color: #777; display: block; margin-top: 4px; }
+        #home .alert-message {
+            background-color: #6da2f8; color: white; padding: 20px; border-radius: 20px;
+            margin: 30px 5px 0 5px; font-size: 15px; line-height: 1.6; position: relative;
+        }
+        #home .alert-message::before {
+            content: ''; position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+            width: 0; height: 0; border-left: 10px solid transparent;
+            border-right: 10px solid transparent; border-bottom: 10px solid #6da2f8;
+        }
+        #home .alert-message p { margin: 0 0 10px 0; }
+        #home .alert-message p:last-child { margin-bottom: 0; }
+
+        /* Ads Task Page Styles */
+        #ads-task .btn-watch-ad {
+            width: 100%; padding: 15px; border:none; border-radius: 12px; color: #fff;
+            background: linear-gradient(90deg, #8855e9, #6a30d8); font-size: 16px;
+        }
+        #ads-task .progress-bar { width: 100%; background-color: #e0e0e0; border-radius: 10px; height: 10px; margin: 15px 0; }
+        #ads-task .progress { width: 20%; height: 100%; background: linear-gradient(90deg, #8855e9, #6a30d8); border-radius: 10px; }
+        #ads-task .progress-text { display: flex; justify-content: space-between; font-size: 14px; color: #777; }
+
+        /* TG Tasks Page Styles */
+        #tg-tasks .task-item { background: #fff; border-radius: 12px; padding: 15px; margin-bottom: 15px; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); display: flex; justify-content: space-between; align-items: center; }
+        #tg-tasks .task-item .info div { line-height: 1.4; }
+        #tg-tasks .task-item .info span { font-weight: 600; }
+        #tg-tasks .task-item .info small { color: #27AE60; font-weight: 500; }
+        #tg-tasks .task-item .actions { display: flex; gap: 10px; }
+        #tg-tasks .task-item .btn-sm { padding: 8px 18px; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; display: flex; align-items: center; gap: 5px; }
+        #tg-tasks .task-item .btn-join { background-color: #3498DB; color: white; }
+        #tg-tasks .task-item .btn-verify { background-color: #f0fdf4; color: #22c55e; border: 1px solid #dcfce7; }
+        
+        /* Refer Page Styles */
+        #refer .card-title { text-align:center; margin-top:-15px; color:#777; }
+        #refer .refer-link { background: #f9f9f9; border: 1px dashed #ccc; padding: 12px; border-radius: 8px; font-size: 14px; color: #555; word-break: break-all; text-align: left; position: relative; }
+        #refer .refer-link i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); cursor: pointer; color: #888; }
+        #refer .btn-share { display: block; width: 100%; padding: 15px; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; color: #fff; cursor: pointer; margin-top: 20px; background: #00a0e9; }
+        #refer .offer-card { text-align: left; padding: 20px; }
+        #refer .offer-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 15px; }
+        #refer .offer-card p { font-size: 14px; color: #444; line-height: 1.7; margin: 0 0 10px 0; }
+
+        /* Withdraw Page Styles */
+        #withdraw .form-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 20px; }
+        #withdraw .form-group { margin-bottom: 15px; text-align: left; }
+        #withdraw .form-group label { display: block; font-size: 14px; color: #555; margin-bottom: 8px; font-weight: 500; }
+        #withdraw .form-group input, #withdraw .form-group select { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 12px; font-size: 16px; box-sizing: border-box; background-color: #fff; }
+        #withdraw .btn-submit { width: 100%; padding: 15px; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; color: #fff; cursor: pointer; margin-top: 10px; background: linear-gradient(90deg, #a855f7, #6d28d9); display: flex; justify-content: center; align-items: center; gap: 8px; }
+        
+        /* Profile Page Styles */
+        #profile .profile-card { text-align: center; }
+        #profile .profile-pic { width: 100px; height: 100px; border-radius: 50%; margin-bottom: 15px; border: 3px solid #eee; }
+        #profile .profile-name { font-size: 20px; font-weight: 600; margin: 0; }
+        #profile .profile-badge { font-size: 14px; color: #555; margin: 5px 0; }
+        #profile .profile-username { color: #888; font-size: 14px; }
+        #profile .info-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #f0f0f0; }
+        #profile .info-row:last-child { border-bottom: none; }
+        #profile .info-row span { color: #555; }
+        #profile .info-row strong { color: #333; font-weight: 600; }
+        #profile .balance-value { color: #22c55e; font-weight: bold !important; }
+        #profile .star-point-btn { width: 100%; padding: 15px; border: 1px solid #ddd; border-radius: 12px; font-size: 16px; font-weight: 600; background: #fff; cursor: pointer; letter-spacing: 2px; }
+        
+        /* Bottom Navigation */
+        .bottom-nav { display: flex; justify-content: space-around; align-items: center; background-color: #fff; border-top: 1px solid #eee; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); }
+        .nav-item { display: flex; flex-direction: column; align-items: center; cursor: pointer; color: #999; }
+        .nav-item.active { color: #8855e9; }
+        .nav-item i { font-size: 22px; margin-bottom: 3px; }
+        .nav-item span { font-size: 12px; font-weight: 500; }
+
+        /* FontAwesome CDN */
+        @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css');
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- ড্যাশবোর্ড সরাসরি দেখা যাবে -->
-        <div id="admin-dashboard">
-            <div class="header-container">
-                <h1>অ্যাডমিন ড্যাশবোর্ড (Noor-e Bangla)</h1>
-            </div>
-            
-            <div class="nav-tabs">
-                <button class="nav-tab active" data-tab="dashboard-tab">ড্যাশবোর্ড</button>
-                <button class="nav-tab" data-tab="hadith-tab">হাদিস</button>
-                <button class="nav-tab" data-tab="surah-tab">সূরা</button>
-                <button class="nav-tab" data-tab="users-tab">ইউজার</button>
+    <div class="mobile-container">
+        <!-- Main Content -->
+        <div class="app-content">
+            <!-- Home Page (New Version) -->
+            <div id="home" class="page active">
+                <div class="balance-card">
+                    <p>Available Balance</p>
+                    <h1>BDT13</h1>
+                    <small>Welcome, Shohoj World Admin</small>
+                </div>
+                <div class="action-grid">
+                    <div class="action-item"> <span>Start Earning</span> <small>Watch Ads</small> </div>
+                    <div class="action-item"> <span>Withdraw</span> <small>Request Payout</small> </div>
+                    <div class="action-item"> <span>Lifetime Earn</span> <small>BDT213</small> </div>
+                    <div class="action-item"> <span>Your Referrals</span> <small>1</small> </div>
+                </div>
+                <div class="alert-message">
+                    <p>⚠️ <b>সতর্কবার্তা</b></p>
+                    <p>একটি মোবাইল থেকে শুধুমাত্র একটি অ্যাকাউন্ট ব্যবহার করা যাবে।</p>
+                    <p>📌 একাধিক অ্যাকাউন্ট ব্যবহার করলে আপনার অ্যাকাউন্ট স্থায়ীভাবে বন্ধ হয়ে যেতে পারে।</p>
+                </div>
             </div>
 
-            <!-- Dashboard Tab -->
-            <div id="dashboard-tab" class="tab-content active">
-                <h3>অ্যাপ পরিসংখ্যান</h3>
-                <div class="dashboard-stats">
-                    <div class="stat-card">
-                        <h3>মোট ইউজার</h3>
-                        <p id="total-users-count">0</p>
+            <!-- Ads Task Page (Old Detailed Version) -->
+            <div id="ads-task" class="page">
+                 <h2 class="page-title">Ads Task</h2>
+                 <div class="card">
+                    <p style="margin-top:0;">Today's Progress</p>
+                    <div class="progress-text"> <span>Completed: 10</span> <span>Total: 50</span> </div>
+                    <div class="progress-bar">
+                        <div class="progress"></div>
                     </div>
+                    <button class="btn-watch-ad">Watch Ad & Earn <i class="fas fa-play-circle"></i></button>
                 </div>
             </div>
 
-            <!-- Hadith Tab -->
-            <div id="hadith-tab" class="tab-content">
-                <h3>নতুন হাদিস যোগ করুন</h3>
-                <form id="hadith-form">
-                    <div class="form-group"><label>শিরোনাম</label><input type="text" id="hadith-title" required></div>
-                    <div class="form-group"><label>আরবি (বাংলা উচ্চারণে)</label><textarea id="hadith-arabic" required></textarea></div>
-                    <div class="form-group"><label>বাংলা অর্থ</label><textarea id="hadith-translation" required></textarea></div>
-                    <button type="submit" class="btn btn-primary">হাদিস যোগ করুন</button>
-                </form>
-                <h3 style="margin-top: 30px;">বিদ্যমান হাদিসসমূহ</h3>
-                <div style="overflow-x: auto;">
-                    <table id="hadith-table"><thead><tr><th>শিরোনাম</th><th>অ্যাকশন</th></tr></thead><tbody></tbody></table>
+            <!-- TG Tasks Page (Old Detailed Version) -->
+            <div id="tg-tasks" class="page">
+                <h2 class="page-title">Telegram Tasks</h2>
+                <div class="task-item">
+                    <div class="info"> <div> <span>A M IMRAN</span><br> <small>Reward: BDT 2.00</small> </div> </div>
+                    <div class="actions"> <button class="btn-sm btn-join">Join <i class="fas fa-arrow-right"></i></button> <button class="btn-sm btn-verify">Verify <i class="fas fa-check-circle"></i></button> </div>
+                </div>
+                 <div class="task-item">
+                    <div class="info"> <div> <span>IMRAN Technology</span><br> <small>Reward: BDT 1.00</small> </div> </div>
+                    <div class="actions"> <button class="btn-sm btn-join">Join <i class="fas fa-arrow-right"></i></button> <button class="btn-sm btn-verify">Verify <i class="fas fa-check-circle"></i></button> </div>
                 </div>
             </div>
 
-            <!-- Surah Tab -->
-            <div id="surah-tab" class="tab-content">
-                <h3>নতুন সূরা যোগ করুন</h3>
-                <form id="surah-form">
-                    <div class="form-group"><label>নাম</label><input type="text" id="surah-name" required></div>
-                    <div class="form-group"><label>সম্পূর্ণ আরবি (বাংলা উচ্চারণে)</label><textarea id="surah-arabic" required></textarea></div>
-                    <div class="form-group"><label>সম্পূর্ণ বাংলা অর্থ</label><textarea id="surah-translation" required></textarea></div>
-                    <button type="submit" class="btn btn-primary">সূরা যোগ করুন</button>
-                </form>
-                <h3 style="margin-top: 30px;">বিদ্যমান সূরাসমূহ</h3>
-                <div style="overflow-x: auto;">
-                    <table id="surah-table"><thead><tr><th>নাম</th><th>অ্যাকশন</th></tr></thead><tbody></tbody></table>
+            <!-- Refer Page (Old Detailed Version) -->
+            <div id="refer" class="page">
+                <h2 class="page-title">Referral Program</h2>
+                <div class="card">
+                     <p class="card-title">Get rewards for every friend who joins with your unique link!</p>
+                     <p style="font-weight: 600; text-align: left; margin-bottom: 10px;">Share & Earn</p>
+                     <div class="refer-link"> https://t.me/shohojworldv5_bot?start=... <i class="far fa-copy"></i> </div>
+                     <button class="btn-share"><i class="fab fa-telegram-plane"></i> Share on Telegram</button>
+                </div>
+                <div class="card offer-card">
+                    <h3>🎁 রেফার লিংক বোনাস অফার</h3>
+                    <p>✅ এড দেখে ইনকাম করো – প্রতিদিন বিজ্ঞাপন দেখে সরাসরি টাকা আয়।</p>
+                    <p>✅ রেফার বোনাস –</p>
+                    <p>আপনি কাউকে রেফার করলে, সে এড দেখে ইনকাম করবে।</p>
+                    <p>আর আপনি প্রতিবার তার ইনকামের ১০% বোনাস পাবেন।</p>
+                    <p>প্রত্যেক রেফারে ১ টাকা করে বোনাস যোগ হবে।</p>
+                    <p>👍 যত বেশি রেফার করবেন, তত বেশি বোনাস জমবে।</p>
+                    <p>👍 নিজের ইনকামের সাথে রেফার ইনকাম = ডাবল প্রফিট!</p>
                 </div>
             </div>
-            
-            <!-- Users Tab -->
-            <div id="users-tab" class="tab-content">
-                <h3>সকল ব্যবহারকারীর তালিকা</h3>
-                <div style="overflow-x: auto;">
-                    <table id="users-table"><thead><tr><th>ইমেইল</th><th>জেলা</th></tr></thead><tbody></tbody></table>
-                </div>
+
+            <!-- Withdraw Page (Old Detailed Version) -->
+            <div id="withdraw" class="page">
+                 <h2 class="page-title">Withdraw Funds</h2>
+                 <div class="card form-card">
+                    <h3>New Request</h3>
+                    <form>
+                        <div class="form-group"> <label for="method">Method:</label> <select id="method" name="method"> <option value="">Select a payment method</option> <option value="bkash">Bkash</option> <option value="nagad">Nagad</option> <option value="rocket">Rocket</option> </select> </div>
+                        <div class="form-group"> <label for="amount">Amount:</label> <input type="text" id="amount" placeholder="Enter your amount"> </div>
+                        <div class="form-group"> <label for="address">Address:</label> <input type="text" id="address" placeholder="Enter wallet or account address"> </div>
+                        <button type="submit" class="btn-submit"> Submit Request <i class="fas fa-paper-plane"></i> </button>
+                    </form>
+                 </div>
             </div>
+
+            <!-- Profile Page (Old Detailed Version) -->
+            <div id="profile" class="page">
+                <h2 class="page-title">My Profile</h2>
+                 <div class="card profile-card">
+                    <img src="https://i.imgur.com/w4SkP6m.png" alt="Profile Picture" class="profile-pic">
+                    <h3 class="profile-name">SX Shrabon Trader</h3>
+                    <p class="profile-badge">TM ʟ ᴇ ᴀ ᴅ ᴇ ʀ ⭐</p>
+                    <p class="profile-username">@Norex_Leader_BDT</p>
+                 </div>
+                 <div class="card info-card">
+                    <div class="info-row"> <span>Current Balance</span> <strong class="balance-value">BDT0</strong> </div>
+                    <div class="info-row"> <span>Total Earnings</span> <strong>BDT0.00</strong> </div>
+                    <div class="info-row"> <span>Total Ads Watched</span> <strong>0</strong> </div>
+                    <div class="info-row"> <span>Total Referrals</span> <strong>0</strong> </div>
+                 </div>
+                 <button class="star-point-btn">S t a r P o i n t - স্টার পয়েন্ট</button>
+            </div>
+        </div>
+
+        <!-- Bottom Navigation -->
+        <div class="bottom-nav">
+            <div class="nav-item active" data-page="home"> <i class="fas fa-home"></i> <span>Home</span> </div>
+            <div class="nav-item" data-page="ads-task"> <i class="fas fa-tv"></i> <span>Ads Task</span> </div>
+            <div class="nav-item" data-page="tg-tasks"> <i class="fab fa-telegram-plane"></i> <span>TG Tasks</span> </div>
+            <div class="nav-item" data-page="refer"> <i class="fas fa-user-friends"></i> <span>Refer</span> </div>
+            <div class="nav-item" data-page="withdraw"> <i class="fas fa-wallet"></i> <span>Withdraw</span> </div>
+            <div class="nav-item" data-page="profile"> <i class="fas fa-user"></i> <span>Profile</span> </div>
         </div>
     </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-    // --- পরিবর্তিত: এটি এখন আপনার ইউজার অ্যাপের Firebase কনফিগারেশন ---
-    const firebaseConfig = {
-  apiKey: "AIzaSyBr1UNzJwnOPzSguOZZwd7dD-ZywDNCX7M",
-  authDomain: "name-aa538.firebaseapp.com",
-  databaseURL: "https://name-aa538-default-rtdb.firebaseio.com",
-  projectId: "name-aa538",
-  storageBucket: "name-aa538.firebasestorage.app",
-  messagingSenderId: "968018455007",
-  appId: "1:968018455007:web:42d7b030d2f321eb89fc6a"
-};
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-
-    // --- Tab Navigation ---
-    const tabs = document.querySelectorAll('.nav-tab');
-    const tabContents = document.querySelectorAll('.tab-content');
-    tabs.forEach(tab => {
-        tab.addEventListener('click', () => {
-            tabs.forEach(t => t.classList.remove('active'));
-            tab.classList.add('active');
-            tabContents.forEach(c => c.classList.remove('active'));
-            document.getElementById(tab.dataset.tab).classList.add('active');
-        });
-    });
-
-    // --- পেইজ লোড হলেই সকল ডেটা লোড হবে ---
-    function loadAllData() {
-        // মোট ইউজার গণনা
-        db.collection('users').onSnapshot(snapshot => {
-            document.getElementById('total-users-count').textContent = snapshot.size;
-        });
-        loadHadiths();
-        loadSurahs();
-        loadUsers();
-    }
-    loadAllData(); // সরাসরি ফাংশন কল করা হচ্ছে
-
-    // --- Hadith Management (পরিবর্তিত ডেটা স্ট্রাকচার) ---
-    const hadithForm = document.getElementById('hadith-form');
-    const hadithTableBody = document.querySelector('#hadith-table tbody');
-    hadithForm.addEventListener('submit', e => {
-        e.preventDefault();
-        db.collection('hadiths').add({
-            title: document.getElementById('hadith-title').value,
-            arabic_bn: document.getElementById('hadith-arabic').value, // ইউজার অ্যাপের সাথে মিলানো হয়েছে
-            translation: document.getElementById('hadith-translation').value, // ইউজার অ্যাপের সাথে মিলানো হয়েছে
-        }).then(() => {
-            hadithForm.reset();
-            alert('হাদিস সফলভাবে যোগ হয়েছে!');
-        }).catch(err => alert('ত্রুটি: ' + err.message));
-    });
-    function loadHadiths() {
-        db.collection('hadiths').onSnapshot(snapshot => {
-            hadithTableBody.innerHTML = '';
-            snapshot.forEach(doc => {
-                const hadith = doc.data();
-                hadithTableBody.innerHTML += `<tr><td>${hadith.title}</td><td><button class="btn btn-danger" onclick="deleteDocument('hadiths', '${doc.id}')">ডিলিট</button></td></tr>`;
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navItems = document.querySelectorAll('.nav-item');
+            const pages = document.querySelectorAll('.page');
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const targetPageId = item.getAttribute('data-page');
+                    navItems.forEach(nav => nav.classList.remove('active'));
+                    pages.forEach(page => page.classList.remove('active'));
+                    item.classList.add('active');
+                    const targetPage = document.getElementById(targetPageId);
+                    if (targetPage) {
+                        targetPage.classList.add('active');
+                    }
+                });
             });
         });
-    }
-
-    // --- Surah Management ---
-    const surahForm = document.getElementById('surah-form');
-    const surahTableBody = document.querySelector('#surah-table tbody');
-    surahForm.addEventListener('submit', e => {
-        e.preventDefault();
-        db.collection('surahs').add({
-            name: document.getElementById('surah-name').value,
-            arabic_bn: document.getElementById('surah-arabic').value,
-            translation: document.getElementById('surah-translation').value,
-        }).then(() => {
-            surahForm.reset();
-            alert('সূরা সফলভাবে যোগ হয়েছে!');
-        }).catch(err => alert('ত্রুটি: ' + err.message));
-    });
-    function loadSurahs() {
-        db.collection('surahs').onSnapshot(snapshot => {
-            surahTableBody.innerHTML = '';
-            snapshot.forEach(doc => {
-                const surah = doc.data();
-                surahTableBody.innerHTML += `<tr><td>${surah.name}</td><td><button class="btn btn-danger" onclick="deleteDocument('surahs', '${doc.id}')">ডিলিট</button></td></tr>`;
-            });
-        });
-    }
-
-    // --- User Management ---
-    const usersTableBody = document.querySelector('#users-table tbody');
-    function loadUsers() {
-        db.collection('users').onSnapshot(snapshot => {
-            usersTableBody.innerHTML = '';
-            snapshot.forEach(doc => {
-                const user = doc.data();
-                usersTableBody.innerHTML += `<tr><td>${user.email}</td><td>${user.district || 'N/A'}</td></tr>`;
-            });
-        });
-    }
-    
-    // --- Global Delete Function ---
-    window.deleteDocument = (collectionName, docId) => {
-        if (confirm('আপনি কি নিশ্চিতভাবে এটি ডিলিট করতে চান?')) {
-            db.collection(collectionName).doc(docId).delete().catch(err => alert('ডিলিট করা যায়নি: ' + err.message));
-        }
-    }
-});
-</script>
+    </script>
 </body>
 </html>
